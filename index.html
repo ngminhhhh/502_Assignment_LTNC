@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm kiếm giao dịch MTTQVN</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f3fef3; /* Soft green background */
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 128, 0, 0.2); /* Green shadow */
+            border-radius: 12px;
+            border: 2px solid #03045e; /* Green border */
+        }
+
+        h1 {
+            text-align: center;
+            color: #0077b6; /* Primary green color */
+            font-weight: bold;
+        }
+
+        /* Search Bar */
+        #searchBar {
+            width: calc(100% - 24px);
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 2px solid #03045e; /* Green border */
+            border-radius: 6px;
+            box-sizing: border-box;
+            background-color: #f9fff9;
+            color: #333;
+        }
+
+        #searchBar:focus {
+            outline: none;
+            border-color: #0077b6;
+            background-color: #caf0f8;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Filters Section */
+        .filters {
+            display: flex;
+            /* flex-wrap: wrap; */
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filters label {
+            display: flex;
+            flex-direction: column;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .filters input {
+            padding: 8px;
+            font-size: 14px;
+            border: 2px solid #03045e;
+            border-radius: 6px;
+            background-color: #f9fff9;
+            color: #333;
+        }
+
+        .filters input:focus {
+            outline: none;
+            border-color: #0077b6;
+            background-color: #e8ffe8;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Timing Section */
+        #timing {
+            font-size: 14px;
+            color: #0077b6;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        table, th, td {
+            border: 2px solid #03045e; /* Green border */
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0077b6; /* Green header */
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        td {
+            background-color: #f9fff9;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #e8ffe8; /* Light green for alternating rows */
+        }
+
+        tr:hover td {
+            background-color: #90e0ef; /* Highlight on hover */
+            /* transition: background-color 0.3s ease; */
+        }
+        .hover-limegreen:hover {
+            background-color: #90e0ef; /* Highlight on hover */
+            /* transition: background-color 0.3s ease; */
+        }
+        .no-results {
+            text-align: center;
+            color: #555;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        /* Button Styling (optional) */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #0077b6;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 128, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #90e0ef;
+            box-shadow: 0 4px 8px rgba(0, 128, 0, 0.4);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .sort-button {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: white;
+            background-color: #0077b6;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 128, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .sort-button:hover {
+            background-color: #90e0ef;
+            box-shadow: 0 4px 8px rgba(0, 128, 0, 0.4);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tìm kiếm giao dịch MTTQVN</h1>
+        <div style="display:flex;justify-content:start;gap:8px">
+        	<input type="text" id="searchBar" placeholder="Tìm kiếm bất kỳ từ khóa nào..." />
+	        <button class="sort-button" id="searchButton" >Tìm Kiếm &rarr;</button>
+        </div>
+
+        <div id="timing">Thời gian tìm kiếm: <span id="timeTaken">0</span> ms</div>
+
+	<div style="display:flex;justify-content:center;align-items:center">
+        	        	      
+        </div>
+
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th style="text-align: center"> ID giao dịch </th>
+                    <th style="text-align: center"> Ngày giao dịch </th>
+                    <th style="text-align: center"> Thông tin giao dịch </th>
+                    <th style="text-align: center"> Số tiền giao dịch </th>
+                    <!-- <th>Debit</th> -->
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Rows will be dynamically added here -->
+            </tbody>
+        </table>
+        <p id="noResults" class="no-results" style="display: none;">No results found</p>
+    </div>
+
+    <script>
+    	const toDateObjDDMMYYYY = (ddmmyy) => {
+    		let parts = ddmmyy.split('/').map(Number);
+		return new Date(parts[2], parts[1] - 1, parts[0]); 
+    	}
+    	const toDateObjMMDDYYYY = (mmddyy) => {
+    		let parts = mmddyy.split('/').map(Number);
+		return new Date(parts[2], parts[0] - 1, parts[1]); 
+    	}
+    	const queryURL = 'http://127.0.0.1:5000/search';
+        const dateKey = "﻿\"date_time\"";
+        const searchBar = document.getElementById('searchBar');
+        const startDate = document.getElementById('startDate');
+        const endDate = document.getElementById('endDate');
+        const minDebit = document.getElementById('minDebit');
+        const maxDebit = document.getElementById('maxDebit');
+        const tableBody = document.getElementById('tableBody');
+        const noResults = document.getElementById('noResults');
+        const timeTaken = document.getElementById('timeTaken');
+        const sortButton = document.getElementById('sortButton');
+        let allResults = [];
+        let currentResults = [];
+
+	const queryEvent = function (event) {
+            if (!event.key || event.key === 'Enter') {
+            console.log('--=-=-=-=-=');
+                const query = searchBar.value.trim();
+                if (query) {
+                    fetchData(query);
+                }
+            }
+        };
+        searchBar.addEventListener('keypress', queryEvent);
+        document.getElementById('searchButton').addEventListener('click', queryEvent);
+
+        async function fetchData(query) {
+            const startTime = performance.now();
+
+            const response = await fetch(queryURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                allResults = data.results;
+                if (!allResults?.length) {
+			startDate.style.visibility = "hidden";
+			endDate.style.visibility = "hidden";
+			sortButton.style.visibility = "hidden";
+			maxDebit.style.visibility = "hidden";
+			minDebit.style.visibility = "hidden";
+		}
+                currentResults = [...allResults];
+                // filterAndDisplayResults();
+                updateTable(currentResults);
+            }
+
+            const endTime = performance.now();
+            timeTaken.textContent = Math.round(endTime - startTime);
+        }
+
+        function filterAndDisplayResults() {
+            const start = new Date(startDate.value);
+            const end = new Date(endDate.value);
+            const min = minDebit.value ? parseFloat(minDebit.value) : 0;
+            const max = maxDebit.value ? parseFloat(maxDebit.value) : Infinity;
+
+            let filteredResults = allResults;
+
+            if (startDate.value) {
+                filteredResults = filteredResults.filter(item =>
+                    new Date(item[dateKey].split("_")[0]) >= start
+
+                );
+            }
+
+            if (endDate.value) {
+                filteredResults = filteredResults.filter(item =>
+                    new Date(item[dateKey].split("_")[0]) <= end
+                );
+            }
+
+            filteredResults = filteredResults.filter(item => {
+                const total = parseFloat(item.debit + item.credit);
+                return total >= min && total <= max;
+            });
+
+            updateTable(filteredResults);
+        }
+
+        sortButton.addEventListener('click', function () {
+            const order = sortButton.getAttribute('data-order');
+            const newOrder = order === 'asc' ? 'desc' : order === 'desc' ? 'unsorted' : 'asc';
+            sortButton.textContent = `Thứ tự tổng tiền: ${newOrder === 'asc' ? 'Tăng dần' : newOrder === 'desc' ? 'Giảm dần' : 'Không'}`;
+            sortButton.setAttribute('data-order', newOrder);
+            sortResultsByTotal(newOrder);
+        });
+        function sortResultsByTotal(order) {
+            if (order === 'unsorted') {
+                updateTable([...allResults]); // Reset to original order
+            } else {
+                const sortedResults = [...currentResults].sort((a, b) => {
+                    const tA = parseFloat(a.debit + a.credit);
+                    const tB = parseFloat(b.debit + b.credit);
+                    return order === 'asc' ? tA - tB : tB - tA;
+                });
+
+                console.log(sortedResults);
+                updateTable(sortedResults);
+            }
+        }
+
+        function updateTable(results) {
+            tableBody.innerHTML = '';
+            if (results.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            } else {
+                noResults.style.display = 'none';
+            }
+
+            results.forEach(item => {
+                const row = document.createElement('tr');
+                // row.classList.add('hover-limegreen');
+                row.innerHTML = `
+                    <td style="text-align: center" class="hover-limegreen">${item.trans_no}</td>
+                    <td style="text-align: center">${item[dateKey].split('_')[0]}</td>
+                    <td style="text-align: center">${item.detail}</td>
+                    <td style="text-align: center">${item.credit + item.debit}</td>
+                `;
+                // row.classList.add('hover-green');
+                tableBody.appendChild(row);
+            });
+        }
+
+        startDate.addEventListener('change', filterAndDisplayResults);
+        endDate.addEventListener('change', filterAndDisplayResults);
+        minDebit.addEventListener('input', filterAndDisplayResults);
+        maxDebit.addEventListener('input', filterAndDisplayResults);
+    </script>
+</body>
+</html>

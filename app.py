@@ -36,6 +36,7 @@ def search_transactions():
     
     return jsonify({
         "query": query,
+        "number_of_results": len(results),
         "results": results
     }), 200
 

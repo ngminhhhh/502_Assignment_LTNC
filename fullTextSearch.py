@@ -2,7 +2,7 @@ import csv
 import string
 from collections import defaultdict
 from pyvi import ViTokenizer
-from rank_bm25 import BM25Okapi
+# from rank_bm25 import BM25Okapi
 
 class fullTextSearch:
     __documents = {} # {id : detail}
@@ -69,13 +69,13 @@ class fullTextSearch:
                 self.__inverted_index[t_id][doc_id] = freq;
 
 
-    def __build_bm25(self):
-        self.__corpus = []
-        for doc_id in sorted(self.__documents.keys()):
-            terms = [self.__id_term[tid] for tid in self.__doc_term_freq[doc_id].keys()]
-            self.__corpus.append(terms)
+    # def __build_bm25(self):
+    #     self.__corpus = []
+    #     for doc_id in sorted(self.__documents.keys()):
+    #         terms = [self.__id_term[tid] for tid in self.__doc_term_freq[doc_id].keys()]
+    #         self.__corpus.append(terms)
         
-        self.bm25 = BM25Okapi(self.__corpus)
+    #     self.bm25 = BM25Okapi(self.__corpus)
 
 
     def __init__(self, filename) -> None:
@@ -87,7 +87,7 @@ class fullTextSearch:
                 self.__num_doc += 1
         self.__preprocess_document()
         self.__build_inverted_index()
-        self.__build_bm25()
+        # self.__build_bm25()
         # * Warm up 
 
 
@@ -111,14 +111,14 @@ class fullTextSearch:
             return []
         
         candidate_docs = list(candidate_docs)
-        candidate_indices = [doc_id for doc_id in candidate_docs]
-        scores = self.bm25.get_batch_scores(query_terms, candidate_indices)
+        # candidate_indices = [doc_id for doc_id in candidate_docs]
+        # scores = self.bm25.get_batch_scores(query_terms, candidate_indices)
 
-        doc_scores = list(zip(candidate_docs, scores))
+        # doc_scores = list(zip(candidate_docs, scores))
 
-        ranked_docs = sorted(doc_scores, key=lambda x: x[1], reverse=True)
+        # ranked_docs = sorted(doc_scores, key=lambda x: x[1], reverse=True)
 
-        return ranked_docs
+        return candidate_docs
     
 
     def get_transaction_info(self, doc_id):

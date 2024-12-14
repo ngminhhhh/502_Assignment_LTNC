@@ -14,20 +14,17 @@ CORS(app)
 def home():
     return jsonify({"message": "Welcome to the Transaction Full Text Search API"}), 200
 
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['GET'])
 def search_transactions():
-    data = request.get_json()
-    if not data or 'query' not in data:
-        return jsonify({"error": "Missing query"}), 400
+    query = request.args.get('q', '').strip()
     
-    query = data['query'].strip()
     if not query:
-        return jsonify({"error": "Do not let query empty"}), 400
-    
+        return jsonify({"error": "Query cannot be empty"}), 400
+
     ranked_docs = fts.search(query)
 
     results = []
-    for doc_id, score in ranked_docs:
+    for doc_id in ranked_docs:
         transaction_info = fts.get_transaction_info(doc_id)
         if transaction_info:
             results.append({

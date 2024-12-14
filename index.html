@@ -215,7 +215,8 @@
     		let parts = mmddyy.split('/').map(Number);
 		return new Date(parts[2], parts[0] - 1, parts[1]); 
     	}
-    	const queryURL = 'http://127.0.0.1:5000/search';
+    	const API_BASE_URL = 'http://127.0.0.1:5000';
+        const queryURL = `${API_BASE_URL}/search`;
         const dateKey = "﻿\"date_time\"";
         const searchBar = document.getElementById('searchBar');
         const startDate = document.getElementById('startDate');
@@ -243,18 +244,15 @@
 
         async function fetchData(query) {
             const startTime = performance.now();
-
-            const response = await fetch(queryURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ query }),
+            const url = `${queryURL}?q=${encodeURIComponent(query)}`;
+            const response = await fetch(url, {
+                method: 'GET',
             });
 
             if (response.ok) {
                 const data = await response.json();
                 allResults = data.results;
+                console.log(allResults)
                 if (!allResults?.length) {
 			startDate.style.visibility = "hidden";
 			endDate.style.visibility = "hidden";
